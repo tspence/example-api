@@ -7,6 +7,7 @@
     <UserSecretsId>aspnet-ExampleApi-e743cfe5-4e27-474f-a775-450d62ae79ec</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>.</DockerfileContext>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
