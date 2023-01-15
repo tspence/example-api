@@ -20,6 +20,7 @@ using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.TestHost;
 using System.Reflection.Metadata;
 using Azure;
+using System.IO;
 
 namespace ExampleTestSuite
 {
@@ -53,6 +54,7 @@ namespace ExampleTestSuite
             // Assert that everything has the necessary documentation
             foreach (var path in openApiDoc.Paths)
             {
+                // Check methods
                 foreach (var method in path.Value.Operations)
                 {
                     Assert.IsFalse(String.IsNullOrWhiteSpace(method.Value.Summary), $"Method {method.Key} for path {path.Key} does not have a <summary> xmldoc.");
@@ -69,6 +71,16 @@ namespace ExampleTestSuite
                     {
                         Assert.IsFalse(String.IsNullOrWhiteSpace(method.Value.RequestBody.Description), $"Method {method.Key} for path {path.Key} does not have a <param> xmldoc for the request body.");
                     }
+                }
+            }
+
+            // Check schemas
+            foreach (var schema in openApiDoc.Components.Schemas)
+            {
+                Assert.IsFalse(String.IsNullOrWhiteSpace(schema.Value.Description), $"Schema {schema.Key} does not have a <summary> xmldoc on the class.");
+                foreach (var property in schema.Value.Properties)
+                {
+                    Assert.IsFalse(String.IsNullOrWhiteSpace(property.Value.Description), $"Schema {schema.Key} does not have a <summary> xmldoc for property {property.Key}.");
                 }
             }
         }

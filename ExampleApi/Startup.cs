@@ -1,4 +1,8 @@
-﻿namespace ExampleApi
+﻿using ExampleBusinessLayer;
+using Searchlight;
+using Swashbuckle.AspNetCore.SwaggerGen;
+
+namespace ExampleApi
 {
     public class Startup
     {
@@ -9,11 +13,18 @@
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(opt =>
             {
-                var assembly = typeof(Startup).Assembly;
-                var basePath = Path.GetDirectoryName(assembly.Location);
-                var fileName = assembly.GetName().Name + ".xml";
-                opt.IncludeXmlComments(Path.Combine(basePath ?? "", fileName));
+                // Add XML comments from main assembly
+                AddXmlDocForAssembly(opt, typeof(Startup));
+                AddXmlDocForAssembly(opt, typeof(BusinessLayer));
             });
+        }
+
+        private static void AddXmlDocForAssembly(SwaggerGenOptions opt, Type type)
+        {
+            var assembly = type.Assembly;
+            var basePath = Path.GetDirectoryName(assembly.Location);
+            var fileName = assembly.GetName().Name + ".xml";
+            opt.IncludeXmlComments(Path.Combine(basePath ?? "", fileName));
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
