@@ -21,9 +21,7 @@ namespace ExampleApi
                 opt.OperationFilter<SearchlightSwashbuckleFilter>();
                 opt.SchemaFilter<SearchlightSwashbuckleFilter>();
             });
-            var engine = new SearchlightEngine()
-                .AddClass(typeof(BlogModel))
-                .AddClass(typeof(PostModel));
+            var engine = new SearchlightEngine().AddAssembly(typeof(BlogModel).Assembly);
             services.AddSingleton(engine);
         }
 
