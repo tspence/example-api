@@ -13,11 +13,12 @@ namespace ExampleBusinessLayer
         {
             _config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<BlogEntity, BlogModel>();
-                cfg.CreateMap<BlogModel, BlogEntity>();
-
-                cfg.CreateMap<PostEntity, PostModel>();
-                cfg.CreateMap<PostModel, PostEntity>();
+                cfg.CreateMap<BlogEntity, BlogModel>()
+                    .ForMember(entity => entity.ID, opt => opt.MapFrom(model => model.BlogId))
+                    .ReverseMap();
+                cfg.CreateMap<PostEntity, PostModel>()
+                    .ForMember(entity => entity.ID, opt => opt.MapFrom(model => model.PostId))
+                    .ReverseMap();
             });
             _mapper = _config.CreateMapper();
         }

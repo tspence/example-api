@@ -1,4 +1,7 @@
-﻿using Searchlight;
+﻿using AutoMapper;
+using AutoMapper.Configuration.Annotations;
+using ExampleDataLayer.Entities;
+using Searchlight;
 
 namespace ExampleBusinessLayer.Models
 {
