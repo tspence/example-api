@@ -21,6 +21,11 @@ namespace ExampleApi.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Test
+        /// </summary>
+        /// <remarks>test</remarks>
+        /// <returns></returns>
         [HttpGet(Name = "GetWeatherForecast")]
         public IEnumerable<WeatherForecast> Get()
         {

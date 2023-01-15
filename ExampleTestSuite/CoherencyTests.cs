@@ -1,13 +1,25 @@
 using AutoMapper;
+using ExampleApi;
 using ExampleBusinessLayer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting.Internal;
+using Microsoft.Extensions.Hosting;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Swashbuckle.AspNetCore.Swagger;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.AspNetCore.Hosting;
+using Moq;
+using Microsoft.AspNetCore.Hosting.Server;
+using Microsoft.AspNetCore.TestHost;
+using System.Reflection.Metadata;
+using Azure;
 
 namespace ExampleTestSuite
 {
@@ -27,24 +39,38 @@ namespace ExampleTestSuite
         {
             // Fetch the OpenAPI specification for this site and assert that all methods and models
             // have documentation.  We do this by scanning for controllers and parameters.
-            var assembly = typeof(ExampleApi.Program).Assembly;
-            var modelTypes = new List<Type>();
-            foreach (var cls in assembly.GetTypes())
-            {
-                if (cls.IsSubclassOf(typeof(ControllerBase)))
-                {
-                    Console.WriteLine(cls.FullName);
+            var server = new TestServer(new WebHostBuilder()
+               .UseStartup<Startup>());
 
-                    // Iterate through all methods on this class and make sure they have necessary documentation
-                    // But only if they have an [HttpGet] or similar annotation on them
-                    foreach (var method in (from m in cls.GetMethods() where m.GetCustomAttributes<HttpMethodAttribute>().Any() select m))
+            // Fetch the swagger provider
+            var swagger = server.Services.GetService<ISwaggerProvider>();
+            Assert.IsNotNull(swagger);
+
+            // Generate swagger
+            var openApiDoc = swagger.GetSwagger("v1");
+            Assert.IsNotNull(openApiDoc);
+
+            // Assert that everything has the necessary documentation
+            foreach (var path in openApiDoc.Paths)
+            {
+                foreach (var method in path.Value.Operations)
+                {
+                    Assert.IsFalse(String.IsNullOrWhiteSpace(method.Value.Summary), $"Method {method.Key} for path {path.Key} does not have a <summary> xmldoc.");
+                    Assert.IsFalse(String.IsNullOrWhiteSpace(method.Value.Description), $"Method {method.Key} for path {path.Key} does not have a <remarks> xmldoc.");
+                    foreach (var parameter in method.Value.Parameters)
                     {
-                        Console.WriteLine(method.Name);
+                        Assert.IsFalse(String.IsNullOrWhiteSpace(parameter.Description), $"Method {method.Key} for path {path.Key} does not have a <param name=\"{parameter.Name}\"> xmldoc.");
+                    }
+                    foreach (var response in method.Value.Responses)
+                    {
+                        Assert.IsFalse(String.IsNullOrWhiteSpace(response.Value.Description), $"Method {method.Key} for path {path.Key} does not have a <returns> xmldoc for return type {response.Key}.");
+                    }
+                    if (method.Value.RequestBody != null)
+                    {
+                        Assert.IsFalse(String.IsNullOrWhiteSpace(method.Value.RequestBody.Description), $"Method {method.Key} for path {path.Key} does not have a <param> xmldoc for the request body.");
                     }
                 }
             }
-
-            // Check all data model types
         }
 
         [TestMethod]

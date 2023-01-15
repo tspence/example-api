@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 
 namespace ExampleApi
 {
@@ -11,10 +12,9 @@ namespace ExampleApi
     {
         public static void Main(string[] args)
         {
+            var startup = new Startup();
             var builder = WebApplication.CreateBuilder(args);
-            builder.Services.AddControllers();
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            startup.ConfigureServices(builder.Services);
             var app = builder.Build();
 
             // Note that Swagger should ALWAYS be present on every environment.
@@ -24,10 +24,6 @@ namespace ExampleApi
             });
             app.UseSwaggerUI(options =>
             {
-                //options.OAuthAppName("Swagger Client");
-                //options.OAuthClientId(clientId);
-                //options.OAuthClientSecret(clientSecret);
-                //options.OAuthUseBasicAuthenticationWithAccessCodeGrant();
             });
 
             app.UseHttpsRedirection();
