@@ -20,6 +20,8 @@ namespace ExampleApi
                 opt.OperationFilter<SearchlightSwashbuckleFilter>();
                 opt.SchemaFilter<SearchlightSwashbuckleFilter>();
             });
+            var engine = new SearchlightEngine().AddAssembly(typeof(BusinessLayer).Assembly);
+            services.AddSingleton(engine);
         }
 
         private static void AddXmlDocForAssembly(SwaggerGenOptions opt, Type type)

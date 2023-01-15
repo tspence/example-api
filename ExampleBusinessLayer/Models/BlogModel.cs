@@ -14,10 +14,12 @@ namespace ExampleBusinessLayer.Models
         /// <summary>
         /// Test
         /// </summary>
+        [SearchlightField]
         public string? ID { get; set; }
         /// <summary>
         /// Test
         /// </summary>
+        [SearchlightField]
         public string? URL { get; set; }
     }
 }

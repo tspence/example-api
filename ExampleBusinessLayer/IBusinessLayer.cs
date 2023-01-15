@@ -9,6 +9,6 @@ namespace ExampleBusinessLayer
 {
     public interface IBusinessLayer
     {
-        Task<FetchResult<T>> Query<T>(string filter, string include, string order, int? skip, int? take);
+        Task<FetchResult<T>> Query<T>(string filter, string include, string order, int? pageSize, int? pageNumber);
     }
 }

@@ -12,17 +12,16 @@ namespace ExampleBusinessLayer
     {
         private SearchlightEngine _engine;
 
-        public BusinessLayer() 
+        public BusinessLayer(SearchlightEngine engine) 
         {
-            _engine = new SearchlightEngine().AddAssembly(this.GetType().Assembly);
+            _engine = engine;
         }
 
-        public async Task<FetchResult<T>> Query<T>(string filter, string include, string order, int? skip, int? take)
+        public async Task<FetchResult<T>> Query<T>(string filter, string include, string order, int? pageSize, int? pageNumber)
         {
             await Task.CompletedTask;
-            var request = new FetchRequest() { filter = filter, include = include, order = order };
             // TODO: Support skip and take
-            //, skip = skip, take = take };
+            var request = new FetchRequest() { filter = filter, include = include, order = order, pageSize = pageSize, pageNumber = pageNumber };
             var source = _engine.FindTable(typeof(T).Name);
             var syntax = source.Parse(request);
             return new FetchResult<T>();

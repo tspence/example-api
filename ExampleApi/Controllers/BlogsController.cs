@@ -36,9 +36,9 @@ namespace ExampleApi.Controllers
         /// <param name="take">t</param>
         /// <returns></returns>
         [HttpGet("/query")]
-        public async Task<FetchResult<BlogModel>> QueryBlogs([FromQuery] string filter, [FromQuery] string include, [FromQuery] string order, [FromQuery] int? skip, [FromQuery] int? take)
+        public async Task<FetchResult<BlogModel>> QueryBlogs([FromQuery] string filter, [FromQuery] string include, [FromQuery] string order, [FromQuery] int? pageSize, [FromQuery] int? pageNumber)
         {
-            return await _businessLayer.Query<BlogModel>(filter, include, order, skip, take);
+            return await _businessLayer.Query<BlogModel>(filter, include, order, pageSize, pageNumber);
         }
 
 
