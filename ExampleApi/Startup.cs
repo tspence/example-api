@@ -1,4 +1,5 @@
-﻿using ExampleBusinessLayer;
+﻿using ExampleApi.Filters;
+using ExampleBusinessLayer;
 using Searchlight;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -16,6 +17,8 @@ namespace ExampleApi
                 // Add XML comments from main assembly
                 AddXmlDocForAssembly(opt, typeof(Startup));
                 AddXmlDocForAssembly(opt, typeof(BusinessLayer));
+                opt.OperationFilter<SearchlightSwashbuckleFilter>();
+                opt.SchemaFilter<SearchlightSwashbuckleFilter>();
             });
         }
 

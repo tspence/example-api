@@ -20,7 +20,9 @@ namespace ExampleBusinessLayer
         public async Task<FetchResult<T>> Query<T>(string filter, string include, string order, int? skip, int? take)
         {
             await Task.CompletedTask;
-            var request = new FetchRequest() { filter = filter, include = include, order = order };//, skip = skip, take = take };
+            var request = new FetchRequest() { filter = filter, include = include, order = order };
+            // TODO: Support skip and take
+            //, skip = skip, take = take };
             var source = _engine.FindTable(typeof(T).Name);
             var syntax = source.Parse(request);
             return new FetchResult<T>();
