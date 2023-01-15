@@ -17,23 +17,25 @@ namespace ExampleApi.Filters
         {
             var returnTypeName = context.MethodInfo.ReturnType.FullName;
             if (returnTypeName != null) { 
-                if (returnTypeName.StartsWith("Searchlight.FetchResult`1[[")) {
+                if (returnTypeName.StartsWith("Searchlight.FetchResult`1[["))
+                {
                     var innerTypeName = context.MethodInfo.ReturnType.GenericTypeArguments[0]?.Name;
-                    operation.Description = $"Queries {returnTypeName} records using the specified filtering, sorting, nested fetch, and pagination rules requested.";
-                    foreach (var parameter in operation.Parameters)
-                    {
-                        parameter.Description = GetOperationParameterDescription(parameter.Name, innerTypeName);
-                    }
+                    ApplySearchlightDocumentation(operation, innerTypeName);
                 }
                 else if (returnTypeName.StartsWith("System.Threading.Tasks.Task`1[[Searchlight.FetchResult`1[["))
                 {
                     var innerTypeName = context.MethodInfo.ReturnType.GenericTypeArguments[0]?.GenericTypeArguments[0]?.Name;
-                    operation.Description = $"Queries {returnTypeName} records using the specified filtering, sorting, nested fetch, and pagination rules requested.";
-                    foreach (var parameter in operation.Parameters)
-                    {
-                        parameter.Description = GetOperationParameterDescription(parameter.Name, innerTypeName);
-                    }
+                    ApplySearchlightDocumentation(operation, innerTypeName);
                 }
+            }
+        }
+
+        private void ApplySearchlightDocumentation(OpenApiOperation operation, string? innerTypeName)
+        {
+            operation.Description = $"Queries {innerTypeName} records using the specified filtering, sorting, nested fetch, and pagination rules requested.  To write a query, see the [Searchlight query language](https://github.com/tspence/csharp-searchlight/wiki/Querying-with-Searchlight).";
+            foreach (var parameter in operation.Parameters)
+            {
+                parameter.Description = GetOperationParameterDescription(parameter.Name, innerTypeName);
             }
         }
 
@@ -49,7 +51,7 @@ namespace ExampleApi.Filters
                         ? $"No collections are currently available on {innerTypeName}, but may be offered in the future." 
                         : "Available collections: " + commands;
                     return $"To fetch additional data on this object, specify the list of elements to retrieve. {commands}";
-                case "order": return $"The sort order for this query.  See See [Searchlight Query Language](https://github.com/tspence/csharp-searchlight/wiki/Querying-with-Searchlight)";
+                case "order": return $"The sort order for this query.  See See [Searchlight query language](https://github.com/tspence/csharp-searchlight/wiki/Querying-with-Searchlight)";
                 case "pageSize": return $"The page size for results (default {_engine.DefaultPageSize?.ToString() ?? "unlimited"}, maximum of {_engine.MaximumPageSize?.ToString() ?? "unlimited"}).  See [Searchlight Query Language](https://github.com/tspence/csharp-searchlight/wiki/Querying-with-Searchlight)";
                 case "pageNumber": return $"The page number for results (default 0).  See [Searchlight Query Language](https://github.com/tspence/csharp-searchlight/wiki/Querying-with-Searchlight)";
                 case "skip": return $"TODO";

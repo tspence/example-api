@@ -5,7 +5,7 @@ using Searchlight;
 
 namespace ExampleBusinessLayer.Models
 {
-    [SearchlightModel]
+    [SearchlightModel(DefaultSort = nameof(PostModel.ID))]
     public class PostModel
     {
         [SearchlightField]

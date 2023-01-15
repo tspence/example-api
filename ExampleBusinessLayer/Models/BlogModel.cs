@@ -8,7 +8,7 @@ namespace ExampleBusinessLayer.Models
     /// <summary>
     /// Test
     /// </summary>
-    [SearchlightModel]
+    [SearchlightModel(DefaultSort = nameof(BlogModel.ID))]
     public class BlogModel
     {
         /// <summary>

@@ -1,5 +1,6 @@
 ﻿using ExampleApi.Filters;
 using ExampleBusinessLayer;
+using ExampleBusinessLayer.Models;
 using Searchlight;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -20,7 +21,9 @@ namespace ExampleApi
                 opt.OperationFilter<SearchlightSwashbuckleFilter>();
                 opt.SchemaFilter<SearchlightSwashbuckleFilter>();
             });
-            var engine = new SearchlightEngine().AddAssembly(typeof(BusinessLayer).Assembly);
+            var engine = new SearchlightEngine()
+                .AddClass(typeof(BlogModel))
+                .AddClass(typeof(PostModel));
             services.AddSingleton(engine);
         }
 
