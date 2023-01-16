@@ -4,6 +4,7 @@ using ExampleDataLayer.Entities;
 using Microsoft.AspNetCore.Http;
 using Searchlight;
 using SecurityBlanket.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace ExampleBusinessLayer.Models
 {
@@ -18,6 +19,7 @@ namespace ExampleBusinessLayer.Models
         /// </summary>
         [SearchlightField]
         public string? ID { get; set; }
+
         /// <summary>
         /// Test
         /// </summary>

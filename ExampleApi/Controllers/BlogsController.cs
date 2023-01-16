@@ -1,5 +1,7 @@
 ﻿using ExampleBusinessLayer;
 using ExampleBusinessLayer.Models;
+using ExampleBusinessLayer.Validators;
+using ExampleDataLayer.Entities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Searchlight;
@@ -31,14 +33,14 @@ namespace ExampleApi.Controllers
         /// <remarks>Test</remarks>
         /// <param name="include">test</param>
         /// <param name="order">t</param>
-        /// <param name="skip">t</param>
+        /// <param name="pageSize"></param>
+        /// <param name="pageNumber"></param>
         /// <param name="filter">t</param>
-        /// <param name="take">t</param>
         /// <returns></returns>
         [HttpGet("/query")]
-        public async Task<FetchResult<BlogModel>> QueryBlogs([FromQuery] string filter, [FromQuery] string include, [FromQuery] string order, [FromQuery] int? pageSize, [FromQuery] int? pageNumber)
+        public Task<FetchResult<BlogModel>> QueryBlogs([FromQuery] string filter, [FromQuery] string include, [FromQuery] string order, [FromQuery] int? pageSize, [FromQuery] int? pageNumber)
         {
-            return await _businessLayer.Query<BlogModel>(filter, include, order, pageSize, pageNumber);
+            return _businessLayer.Query<BlogModel>(filter, include, order, pageSize, pageNumber);
         }
 
 
@@ -49,9 +51,10 @@ namespace ExampleApi.Controllers
         /// <param name="models">comment</param>
         /// <returns></returns>
         [HttpPost]
-        public IEnumerable<BlogModel> Create([FromBody]BlogModel[] models)
+        public Task<BlogModel[]> Create([FromBody]BlogModel[] models)
         {
-            return models;
+            // TODO: Add a mid-level filter to support creating a single model rather than only an array
+            return _businessLayer.Create<BlogModel, BlogEntity>(models);
         }
     }
 }

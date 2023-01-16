@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.0" />
+    <PackageReference Include="FluentValidation" Version="11.4.0" />
     <PackageReference Include="Searchlight" Version="0.9.22" />
     <PackageReference Include="SecurityBlanket" Version="1.1.0" />
   </ItemGroup>

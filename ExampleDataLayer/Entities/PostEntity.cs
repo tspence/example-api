@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection.Metadata;
 using System.Text;
@@ -9,7 +11,8 @@ namespace ExampleDataLayer.Entities
 {
     public class PostEntity
     {
-        public int PostId { get; set; }
+        [Key]
+        public Guid PostId { get; set; }
         public string Title { get; set; } = "";
         public string Content { get; set; } = "";
 

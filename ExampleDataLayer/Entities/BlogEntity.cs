@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,7 +10,8 @@ namespace ExampleDataLayer.Entities
 {
     public class BlogEntity
     {
-        public int BlogId { get; set; }
+        [Key]
+        public Guid BlogId { get; set; }
         public string Url { get; set; } = "";
     }
 }

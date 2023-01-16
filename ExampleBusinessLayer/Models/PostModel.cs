@@ -12,8 +12,10 @@ namespace ExampleBusinessLayer.Models
     {
         [SearchlightField]
         public string? ID { get; set; }
+
         [SearchlightField]
         public string? Title { get; set; }
+        
         [SearchlightField]
         public string? Content { get; set; }
 

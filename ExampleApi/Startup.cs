@@ -1,6 +1,8 @@
 ﻿using ExampleApi.Filters;
 using ExampleBusinessLayer;
 using ExampleBusinessLayer.Models;
+using ExampleBusinessLayer.Validators;
+using FluentValidation;
 using Searchlight;
 using SecurityBlanket;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -11,9 +13,11 @@ namespace ExampleApi
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers(options => {
+            services.AddControllers(options =>
+            {
                 options.Filters.Add<SecurityBlanketActionFilter>();
             });
+            services.AddValidatorsFromAssemblyContaining<BlogModelValidator>();
             services.AddLogging();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(opt =>
@@ -26,6 +30,8 @@ namespace ExampleApi
             });
             var engine = new SearchlightEngine().AddAssembly(typeof(BlogModel).Assembly);
             services.AddSingleton(engine);
+            services.AddSingleton<IBusinessLayer, BusinessLayer>();
+            services.AddSingleton<IModelEntityMapper, ModelEntityMapper>();
         }
 
         private static void AddXmlDocForAssembly(SwaggerGenOptions opt, Type type)
