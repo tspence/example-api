@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using AutoMapper.Configuration.Annotations;
 using ExampleDataLayer.Entities;
+using Microsoft.AspNetCore.Http;
 using Searchlight;
+using SecurityBlanket.Interfaces;
 
 namespace ExampleBusinessLayer.Models
 {
@@ -9,7 +11,7 @@ namespace ExampleBusinessLayer.Models
     /// Test
     /// </summary>
     [SearchlightModel(DefaultSort = nameof(BlogModel.ID))]
-    public class BlogModel
+    public class BlogModel : ICustomSecurity
     {
         /// <summary>
         /// Test
@@ -21,5 +23,10 @@ namespace ExampleBusinessLayer.Models
         /// </summary>
         [SearchlightField]
         public string? URL { get; set; }
+
+        public bool IsVisible(HttpContext context)
+        {
+            return true;
+        }
     }
 }

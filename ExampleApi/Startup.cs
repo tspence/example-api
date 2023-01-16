@@ -2,6 +2,7 @@
 using ExampleBusinessLayer;
 using ExampleBusinessLayer.Models;
 using Searchlight;
+using SecurityBlanket;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace ExampleApi
@@ -10,7 +11,9 @@ namespace ExampleApi
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(options => {
+                options.Filters.Add<SecurityBlanketActionFilter>();
+            });
             services.AddLogging();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen(opt =>
