@@ -15,6 +15,7 @@ namespace ExampleApi
             var startup = new Startup();
             var builder = WebApplication.CreateBuilder(args);
             startup.ConfigureServices(builder.Services);
+            builder.Services.AddRazorPages();
             var app = builder.Build();
 
             // Note that Swagger should ALWAYS be present on every environment.
@@ -28,6 +29,7 @@ namespace ExampleApi
 
             app.UseHttpsRedirection();
             app.MapControllers();
+            app.MapRazorPages();
             app.Run();
         }
     }
