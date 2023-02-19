@@ -32,6 +32,7 @@ namespace ExampleApi
             services.AddSingleton(engine);
             services.AddSingleton<IBusinessLayer, BusinessLayer>();
             services.AddSingleton<IModelEntityMapper, ModelEntityMapper>();
+            services.AddRazorPages();
         }
 
         private static void AddXmlDocForAssembly(SwaggerGenOptions opt, Type type)

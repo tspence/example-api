@@ -1,10 +1,4 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Options;
-using Microsoft.Identity.Web;
-using Microsoft.OpenApi.Models;
-using System.Reflection;
+[assembly: System.Reflection.AssemblyVersion("1.0.*")]
 
 namespace ExampleApi
 {
@@ -15,7 +9,6 @@ namespace ExampleApi
             var startup = new Startup();
             var builder = WebApplication.CreateBuilder(args);
             startup.ConfigureServices(builder.Services);
-            builder.Services.AddRazorPages();
             var app = builder.Build();
 
             // Note that Swagger should ALWAYS be present on every environment.
@@ -26,7 +19,6 @@ namespace ExampleApi
             app.UseSwaggerUI(options =>
             {
             });
-
             app.UseHttpsRedirection();
             app.MapControllers();
             app.MapRazorPages();
