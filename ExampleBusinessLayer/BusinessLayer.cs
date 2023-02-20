@@ -13,8 +13,8 @@ namespace ExampleBusinessLayer
 {
     public class BusinessLayer : IBusinessLayer
     {
-        private SearchlightEngine _engine;
-        private IModelEntityMapper _mapper;
+        private readonly SearchlightEngine _engine;
+        private readonly IModelEntityMapper _mapper;
 
         public BusinessLayer(SearchlightEngine engine, IModelEntityMapper mapper) 
         {
@@ -22,32 +22,19 @@ namespace ExampleBusinessLayer
             _mapper = mapper;
         }
 
-        public Task<TModel[]> Create<TModel, TEntity>(TModel[] models, AbstractValidator<TModel> validator) where TEntity : class
+        public async Task<List<TModel>> Create<TModel, TEntity>(List<TModel> models) where TEntity : class
         {
-            // Validate input models and transform to entities
-            // var mapper = _mapper.GetMapper();
-            // var entities = new List<TEntity>();
-            // for (int i = 0; i < models.Length; i++)
-            // {
-            //     var context = new ValidationContext<TModel>(models[i]);
-            //     context.RootContextData["Method"] = "POST";
-            //     var result = validator.Validate(context);
-            //     entities.Add(mapper.Map<TModel, TEntity>(models[i]));
-            // }
-            var context = new ValidationContext<TModel[]>(models);
-            validator.Validate(context);
-            var entities = _mapper.GetMapper().Map<TModel[], TEntity[]>(models);
-
             // Insert entities in database
-            using (var db = new BloggingContext())
+            var entities = _mapper.GetMapper().Map<List<TModel>, List<TEntity>>(models);
+            await using (var db = new BloggingContext())
             {
                 db.Set<TEntity>().AddRange(entities);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
             }
 
             // Convert back to models
-            var resultModels = _mapper.GetMapper().Map<TEntity[], TModel[]>(entities);
-            return Task.FromResult(resultModels);
+            var resultModels = _mapper.GetMapper().Map<List<TEntity>, List<TModel>>(entities);
+            return resultModels;
         }
 
         public async Task<FetchResult<T>> Query<T>(string filter, string include, string order, int? pageSize, int? pageNumber)

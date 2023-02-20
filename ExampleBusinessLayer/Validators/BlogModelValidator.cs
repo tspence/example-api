@@ -6,39 +6,28 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Http;
 
 namespace ExampleBusinessLayer.Validators
 {
     public class BlogModelValidator : AbstractValidator<BlogModel>
     {
-        public BlogModelValidator() 
+        public BlogModelValidator(IHttpContextAccessor httpContextAccessor)
         {
             RuleFor(blog => blog.URL).NotNull().NotEmpty();
+            RuleFor(blog => blog.ID)
+                .Must(value => NullOnCreate(value, httpContextAccessor.HttpContext.Request.Method))
+                .WithMessage("The ID field must be null when calling create.");
         }
-        
-        protected override bool PreValidate(ValidationContext<BlogModel> context, ValidationResult result)
-        {
-            var method = (string)context.RootContextData["Method"];
 
-            // When creating a blog, the ID must be null because it will be assigned by the database
-            if (method == "POST") 
+        private bool NullOnCreate(string? value, string method)
+        {
+            if (method.ToUpper() == "POST")
             {
-                if (context.InstanceToValidate.ID != null)
-                {
-                    result.Errors.Add(new ValidationFailure("id", "The ID field must be null when calling create."));
-                    return false;
-                }
+                return value == null;
             }
-            
-            return true;
-        }
-    }
 
-    public class BlogModelArrayValidator : AbstractValidator<IEnumerable<BlogModel>>
-    {
-        public BlogModelArrayValidator()
-        {
-            RuleForEach(obj => obj).SetValidator(BlogModelValidator);
+            return value != null;
         }
     }
 }

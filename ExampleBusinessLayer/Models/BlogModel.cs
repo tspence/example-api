@@ -30,7 +30,7 @@ namespace ExampleBusinessLayer.Models
         /// The author or publisher of this blog
         /// </summary>
         [SearchlightField]
-        public string Author { get; set; }
+        public string? Author { get; set; }
         
         /// <summary>
         /// A short description of this blog site

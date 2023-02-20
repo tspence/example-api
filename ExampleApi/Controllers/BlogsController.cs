@@ -6,7 +6,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Searchlight;
 using System.Data;
+using FluentValidation;
 using JsonPatchCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace ExampleApi.Controllers
 {
@@ -38,9 +40,19 @@ namespace ExampleApi.Controllers
         /// <param name="models">comment</param>
         /// <returns></returns>
         [HttpPost]
-        public Task<BlogModel[]> BlogCreate([FromBody]BlogModel[] models)
+        public async Task<List<BlogModel>> BlogCreate([FromBody]List<BlogModel> models)
         {
-            return _businessLayer.Create<BlogModel, BlogEntity>(models);
+            // var context = new ValidationContext<List<BlogModel>>(models);
+            // context.RootContextData["Method"] = "POST";
+            // var validation = new BlogModelArrayValidator().Validate(context);
+            // if (!validation.IsValid)
+            // {
+            //     return BadRequestResult();
+            //     var errors = new Microsoft.AspNetCore.Mvc.BadRequestResult(.ValidationProblem(validation.ToDictionary());
+            //     return errors;
+            // }
+            var results = await _businessLayer.Create<BlogModel, BlogEntity>(models);
+            return results;
         }
 
         /// <summary>
