@@ -35,7 +35,12 @@ namespace ExampleApi
             services.AddSingleton<IModelEntityMapper, ModelEntityMapper>();
             services.AddRazorPages();
             services.AddHttpContextAccessor();
+            
+            // Add validation logic
             services.AddFluentValidationAutoValidation();
+            services.AddTransient<IValidator<BlogModel>, BlogModelValidator>();
+            services.AddTransient<IValidator<List<BlogModel>>, BlogModelListValidator>();
+            services.AddTransient<IValidator<PostModel>, PostModelValidator>();
         }
 
         private static void AddXmlDocForAssembly(SwaggerGenOptions opt, Type type)
