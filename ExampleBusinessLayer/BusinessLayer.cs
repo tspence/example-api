@@ -37,14 +37,15 @@ namespace ExampleBusinessLayer
             return resultModels;
         }
 
-        public async Task<FetchResult<T>> Query<T>(string filter, string include, string order, int? pageSize, int? pageNumber)
+        public async Task<FetchResult<TEntity>> Query<TEntity>(string filter, string include, string order, int? pageSize, int? pageNumber) where TEntity : class
         {
-            await Task.CompletedTask;
-            // TODO: Support skip and take
             var request = new FetchRequest() { filter = filter, include = include, order = order, pageSize = pageSize, pageNumber = pageNumber };
-            var source = _engine.FindTable(typeof(T).Name);
+            var source = _engine.FindTable(typeof(TEntity).Name);
             var syntax = source.Parse(request);
-            return new FetchResult<T>();
+            await using (var db = new BloggingContext())
+            {
+                return syntax.QueryCollection(db.Set<TEntity>());
+            }
         }
     }
 }

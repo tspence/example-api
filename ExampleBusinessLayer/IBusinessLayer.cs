@@ -11,6 +11,8 @@ namespace ExampleBusinessLayer
     public interface IBusinessLayer
     {
         Task<List<TModel>> Create<TModel, TEntity>(List<TModel> models) where TEntity : class;
-        Task<FetchResult<T>> Query<T>(string filter, string include, string order, int? pageSize, int? pageNumber);
+
+        Task<FetchResult<TEntity>> Query<TEntity>(string filter, string include, string order, int? pageSize,
+            int? pageNumber) where TEntity : class;
     }
 }

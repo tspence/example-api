@@ -42,15 +42,6 @@ namespace ExampleApi.Controllers
         [HttpPost]
         public async Task<List<BlogModel>> BlogCreate([FromBody]List<BlogModel> models)
         {
-            // var context = new ValidationContext<List<BlogModel>>(models);
-            // context.RootContextData["Method"] = "POST";
-            // var validation = new BlogModelArrayValidator().Validate(context);
-            // if (!validation.IsValid)
-            // {
-            //     return BadRequestResult();
-            //     var errors = new Microsoft.AspNetCore.Mvc.BadRequestResult(.ValidationProblem(validation.ToDictionary());
-            //     return errors;
-            // }
             var results = await _businessLayer.Create<BlogModel, BlogEntity>(models);
             return results;
         }

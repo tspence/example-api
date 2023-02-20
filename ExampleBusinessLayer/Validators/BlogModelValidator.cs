@@ -15,7 +15,6 @@ namespace ExampleBusinessLayer.Validators
         public BlogModelValidator(IHttpContextAccessor httpContextAccessor)
         {
             RuleFor(blog => blog.URL).NotNull().NotEmpty();
-            RuleFor(blog => blog.Author).MinimumLength(10).WithMessage("Trying something");
             RuleFor(blog => blog.ID)
                 .Must(value => NullOnCreate(value, httpContextAccessor.HttpContext.Request.Method))
                 .WithMessage("The ID field must be null when calling create.");
