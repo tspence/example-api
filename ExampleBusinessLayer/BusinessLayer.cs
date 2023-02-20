@@ -22,18 +22,27 @@ namespace ExampleBusinessLayer
             _mapper = mapper;
         }
 
-        public Task<TModel[]> Create<TModel, TEntity>(TModel[] models) where TEntity : class
+        public Task<TModel[]> Create<TModel, TEntity>(TModel[] models, AbstractValidator<TModel> validator) where TEntity : class
         {
-            // Convert models to entities
+            // Validate input models and transform to entities
+            // var mapper = _mapper.GetMapper();
+            // var entities = new List<TEntity>();
+            // for (int i = 0; i < models.Length; i++)
+            // {
+            //     var context = new ValidationContext<TModel>(models[i]);
+            //     context.RootContextData["Method"] = "POST";
+            //     var result = validator.Validate(context);
+            //     entities.Add(mapper.Map<TModel, TEntity>(models[i]));
+            // }
+            var context = new ValidationContext<TModel[]>(models);
+            validator.Validate(context);
             var entities = _mapper.GetMapper().Map<TModel[], TEntity[]>(models);
-            // Need a way to clear out IDs on newly uploaded records - or use guids
 
             // Insert entities in database
-            using (var context = new BloggingContext())
+            using (var db = new BloggingContext())
             {
-                context.Set<TEntity>().AddRange(entities);
-                context.SaveChanges();
-                // Need a way to fetch back ID numbers from inserted records - or use guids
+                db.Set<TEntity>().AddRange(entities);
+                db.SaveChanges();
             }
 
             // Convert back to models

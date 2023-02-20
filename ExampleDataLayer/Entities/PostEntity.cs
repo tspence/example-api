@@ -12,10 +12,11 @@ namespace ExampleDataLayer.Entities
     public class PostEntity
     {
         [Key]
-        public Guid PostId { get; set; }
-        public string Title { get; set; } = "";
-        public string Content { get; set; } = "";
-
-        public int BlogId { get; set; }
+        public Int64 PostId { get; set; }
+        public Int64 BlogId { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string Url { get; set; } = string.Empty;
+        public string? Summary { get; set; }
+        public DateOnly? PostedDate { get; set; }
     }
 }
