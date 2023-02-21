@@ -3,6 +3,7 @@ using ExampleBusinessLayer;
 using ExampleBusinessLayer.Models;
 using ExampleBusinessLayer.Validators;
 using FluentValidation;
+using FluentValidation.AspNetCore;
 using Searchlight;
 using SecurityBlanket;
 using Swashbuckle.AspNetCore.SwaggerGen;
@@ -33,6 +34,13 @@ namespace ExampleApi
             services.AddSingleton<IBusinessLayer, BusinessLayer>();
             services.AddSingleton<IModelEntityMapper, ModelEntityMapper>();
             services.AddRazorPages();
+            services.AddHttpContextAccessor();
+            
+            // Add validation logic
+            services.AddFluentValidationAutoValidation();
+            services.AddTransient<IValidator<BlogModel>, BlogModelValidator>();
+            services.AddTransient<IValidator<List<BlogModel>>, BlogModelListValidator>();
+            services.AddTransient<IValidator<PostModel>, PostModelValidator>();
         }
 
         private static void AddXmlDocForAssembly(SwaggerGenOptions opt, Type type)

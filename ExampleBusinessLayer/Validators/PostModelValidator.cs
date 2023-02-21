@@ -13,7 +13,6 @@ namespace ExampleBusinessLayer.Validators
         public PostModelValidator() 
         {
             RuleFor(post => post.Title).NotEmpty();
-            RuleFor(post => post.Content).NotEmpty();
         }
     }
 }

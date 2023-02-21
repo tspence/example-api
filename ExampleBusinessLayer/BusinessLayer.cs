@@ -13,8 +13,8 @@ namespace ExampleBusinessLayer
 {
     public class BusinessLayer : IBusinessLayer
     {
-        private SearchlightEngine _engine;
-        private IModelEntityMapper _mapper;
+        private readonly SearchlightEngine _engine;
+        private readonly IModelEntityMapper _mapper;
 
         public BusinessLayer(SearchlightEngine engine, IModelEntityMapper mapper) 
         {
@@ -22,33 +22,30 @@ namespace ExampleBusinessLayer
             _mapper = mapper;
         }
 
-        public Task<TModel[]> Create<TModel, TEntity>(TModel[] models) where TEntity : class
+        public async Task<List<TModel>> Create<TModel, TEntity>(List<TModel> models) where TEntity : class
         {
-            // Convert models to entities
-            var entities = _mapper.GetMapper().Map<TModel[], TEntity[]>(models);
-            // Need a way to clear out IDs on newly uploaded records - or use guids
-
             // Insert entities in database
-            using (var context = new BloggingContext())
+            var entities = _mapper.GetMapper().Map<List<TModel>, List<TEntity>>(models);
+            await using (var db = new BloggingContext())
             {
-                context.Set<TEntity>().AddRange(entities);
-                context.SaveChanges();
-                // Need a way to fetch back ID numbers from inserted records - or use guids
+                db.Set<TEntity>().AddRange(entities);
+                await db.SaveChangesAsync();
             }
 
             // Convert back to models
-            var resultModels = _mapper.GetMapper().Map<TEntity[], TModel[]>(entities);
-            return Task.FromResult(resultModels);
+            var resultModels = _mapper.GetMapper().Map<List<TEntity>, List<TModel>>(entities);
+            return resultModels;
         }
 
-        public async Task<FetchResult<T>> Query<T>(string filter, string include, string order, int? pageSize, int? pageNumber)
+        public async Task<FetchResult<TEntity>> Query<TEntity>(string filter, string include, string order, int? pageSize, int? pageNumber) where TEntity : class
         {
-            await Task.CompletedTask;
-            // TODO: Support skip and take
             var request = new FetchRequest() { filter = filter, include = include, order = order, pageSize = pageSize, pageNumber = pageNumber };
-            var source = _engine.FindTable(typeof(T).Name);
+            var source = _engine.FindTable(typeof(TEntity).Name);
             var syntax = source.Parse(request);
-            return new FetchResult<T>();
+            await using (var db = new BloggingContext())
+            {
+                return syntax.QueryCollection(db.Set<TEntity>());
+            }
         }
     }
 }

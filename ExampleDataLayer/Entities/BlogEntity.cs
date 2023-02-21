@@ -10,8 +10,10 @@ namespace ExampleDataLayer.Entities
 {
     public class BlogEntity
     {
-        [Key]
-        public Guid BlogId { get; set; }
-        public string Url { get; set; } = "";
+        [Key] 
+        public Int64 BlogId { get; set; }
+        public string Url { get; set; } = string.Empty;
+        public string Author { get; set; } = string.Empty;
+        public string? Description { get; set; }
     }
 }

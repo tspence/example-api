@@ -17,7 +17,13 @@ namespace ExampleBusinessLayer.Models
         public string? Title { get; set; }
         
         [SearchlightField]
-        public string? Content { get; set; }
+        public string Url { get; set; } = string.Empty;
+
+        [SearchlightField]
+        public string? Summary { get; set; }
+        
+        [SearchlightField]
+        public DateOnly? PostedDate { get; set; }
 
         public bool IsVisible(HttpContext context)
         {
