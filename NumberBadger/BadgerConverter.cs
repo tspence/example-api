@@ -15,7 +15,7 @@ public static class Badger
     /// <returns>The encoded badger string</returns>
     public static string CreateBadge(Guid value, string? prefix)
     {
-        var encodedString = Base58.Bitcoin.Encode(value.ToByteArray());
+        var encodedString = Base58.Ripple.Encode(value.ToByteArray());
         return $"{prefix}{encodedString}";
     }
     
@@ -51,7 +51,7 @@ public static class Badger
         int numBytesWritten = 0;
         try
         {
-            success = Base58.Bitcoin.TryDecode(codeString, data, out numBytesWritten);
+            success = Base58.Ripple.TryDecode(codeString, data, out numBytesWritten);
         }
         // Bummer! SimpleBase throws exceptions rather than just returning false
         catch

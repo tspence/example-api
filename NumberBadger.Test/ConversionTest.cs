@@ -11,14 +11,14 @@ public class UnitTest1
         // Try once with a prefix
         var originalData = Guid.Empty;
         var badge = Badger.CreateBadge(originalData, "My");
-        Assert.AreEqual("My1111111111111111", badge);
+        Assert.AreEqual("Myrrrrrrrrrrrrrrrr", badge);
         var result = Badger.ParseGuid(badge, "My");
         Assert.IsTrue(result.Success);
         Assert.AreEqual(result.Value, originalData);
         
         // Now same thing without a prefix
         badge = Badger.CreateBadge(originalData, null);
-        Assert.AreEqual("1111111111111111", badge);
+        Assert.AreEqual("rrrrrrrrrrrrrrrr", badge);
         result = Badger.ParseGuid(badge, null);
         Assert.IsTrue(result.Success);
         Assert.AreEqual(result.Value, originalData);
