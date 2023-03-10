@@ -18,6 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Files", "Files", "{0368D731
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumberBadger", "NumberBadger\NumberBadger.csproj", "{D12D264D-D860-4685-988A-CE01E79452F5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NumberBadger.Test", "NumberBadger.Test\NumberBadger.Test.csproj", "{667900E4-3C4A-45FC-9798-32295BD83C05}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +44,14 @@ Global
 		{F873CDB9-6413-4883-9DF6-D80EA143DEA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F873CDB9-6413-4883-9DF6-D80EA143DEA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F873CDB9-6413-4883-9DF6-D80EA143DEA3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D12D264D-D860-4685-988A-CE01E79452F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D12D264D-D860-4685-988A-CE01E79452F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D12D264D-D860-4685-988A-CE01E79452F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D12D264D-D860-4685-988A-CE01E79452F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{667900E4-3C4A-45FC-9798-32295BD83C05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{667900E4-3C4A-45FC-9798-32295BD83C05}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{667900E4-3C4A-45FC-9798-32295BD83C05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{667900E4-3C4A-45FC-9798-32295BD83C05}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
