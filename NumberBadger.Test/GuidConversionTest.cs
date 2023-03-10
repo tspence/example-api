@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace NumberBadger.Test;
 
 [TestClass]
-public class UnitTest1
+public class GuidConversionTest
 {
     [TestMethod]
     public void TestEmptyGuidParsing()
@@ -25,6 +25,20 @@ public class UnitTest1
     }
     
     [TestMethod]
+    public void TestRealGuids()
+    {
+        // Randomly generate a bunch of guids and test them
+        for (var i = 0; i < 1000; i++)
+        {
+            var originalData = Guid.NewGuid();
+            var badge = Badger.CreateBadge(originalData, "My");
+            var result = Badger.ParseGuid(badge, "My");
+            Assert.IsTrue(result.Success);
+            Assert.AreEqual(result.Value, originalData);
+        }
+    }
+
+    [TestMethod]
     public void TestGuidFailures()
     {
         // Try a bad prefix
@@ -44,6 +58,5 @@ public class UnitTest1
         result = Badger.ParseGuid(badge, "My");
         Assert.IsFalse(result.Success);
         Assert.AreEqual("The ID 'My11111111' is incomplete. Did you forget a few characters?", result.Message);
-
     }
 }
